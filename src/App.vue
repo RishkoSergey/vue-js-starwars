@@ -2,7 +2,7 @@
   <div id="app" @scroll="onScroll">
     <Header />
     <div class="container">
-      <List :scrollToEnd="scrollToEnd" />
+      <List />
     </div>
     <Footer />
   </div>
@@ -23,11 +23,13 @@ export default {
   },
   data() {
     return {
-      scrollToEnd: 0,
       checkFirst: true
     };
   },
   computed: mapGetters(["getCards"]),
+  mounted() {
+    this.$store.dispatch("fetchCards");
+  },
   methods: {
     onScroll: function(event) {
       const endList = event.target.lastElementChild.getBoundingClientRect().top;
@@ -36,7 +38,7 @@ export default {
           window.pageYOffset + document.documentElement.clientHeight &&
         this.checkFirst
       ) {
-        this.scrollToEnd++;
+        this.$store.dispatch("fetchCards");
         this.checkFirst = false;
       }
     }

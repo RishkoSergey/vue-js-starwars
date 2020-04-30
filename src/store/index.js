@@ -7,11 +7,13 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   actions: {
     async fetchCards(ctx) {
-      await axios
-        .get(ctx.state.nextUrl || "https://swapi.dev/api/people/?page=1")
-        .then(res => {
-          ctx.commit("updateCards", res.data);
-        });
+      if (ctx.state.nextUrl !== null) {
+        await axios
+          .get(ctx.state.nextUrl || "https://swapi.dev/api/people/?page=1")
+          .then(res => {
+            ctx.commit("updateCards", res.data);
+          });
+      }
     }
   },
   mutations: {

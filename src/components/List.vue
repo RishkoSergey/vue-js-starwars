@@ -7,20 +7,10 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters } from "vuex";
 
 export default {
-  props: ["scrollToEnd"],
-  computed: mapGetters(["getCards"]),
-  methods: mapActions(["fetchCards"]),
-  async mounted() {
-    this.fetchCards();
-  },
-  watch: {
-    scrollToEnd: async function() {
-      this.fetchCards();
-    }
-  }
+  computed: mapGetters(["getCards"])
 };
 </script>
 
