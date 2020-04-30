@@ -1,39 +1,24 @@
 <template>
   <div class="list">
-    <div class="list__item" v-for="card in cards" :key="card.name">
+    <div class="list__item" v-for="card in getCards" :key="card.name">
       <div class="list__item__info">{{ card.name }}</div>
     </div>
   </div>
 </template>
 
 <script>
-import axios from "axios";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
-  data() {
-    return {
-      cards: [],
-      count: 0,
-      nextUrl: "",
-      currentPage: 1
-    };
-  },
   props: ["scrollToEnd"],
+  computed: mapGetters(["getCards"]),
+  methods: mapActions(["fetchCards"]),
   async mounted() {
-    await axios.get("https://swapi.dev/api/people/?page=1").then(res => {
-      this.cards = this.cards.concat(res.data.results);
-      this.nextUrl = res.data.next;
-    });
+    this.fetchCards();
   },
   watch: {
     scrollToEnd: async function() {
-      if (this.nextUrl) {
-        await axios.get(this.nextUrl).then(res => {
-          this.cards = this.cards.concat(res.data.results);
-          this.nextUrl = res.data.next;
-          this.$emit("fetched");
-        });
-      }
+      this.fetchCards();
     }
   }
 };

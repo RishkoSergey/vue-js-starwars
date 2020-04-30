@@ -2,7 +2,7 @@
   <div id="app" @scroll="onScroll">
     <Header />
     <div class="container">
-      <List :scrollToEnd="scrollToEnd" @fetched="checkFirst = true" />
+      <List :scrollToEnd="scrollToEnd" />
     </div>
     <Footer />
   </div>
@@ -12,6 +12,7 @@
 import List from "./components/List";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import { mapGetters } from "vuex";
 
 export default {
   name: "App",
@@ -26,17 +27,23 @@ export default {
       checkFirst: true
     };
   },
+  computed: mapGetters(["getCards"]),
   methods: {
     onScroll: function(event) {
-      const endOfList = event.target.lastElementChild.getBoundingClientRect().top;
+      const endList = event.target.lastElementChild.getBoundingClientRect().top;
       if (
-        window.pageYOffset + endOfList <
+        window.pageYOffset + endList <
           window.pageYOffset + document.documentElement.clientHeight &&
         this.checkFirst
       ) {
         this.scrollToEnd++;
         this.checkFirst = false;
       }
+    }
+  },
+  watch: {
+    getCards: function() {
+      this.checkFirst = true;
     }
   }
 };
