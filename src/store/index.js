@@ -11,6 +11,13 @@ export default new Vuex.Store({
         await axios
           .get(ctx.state.nextUrl || "https://swapi.dev/api/people/?page=1")
           .then(res => {
+            res.data.results.forEach(async card => {
+              card.species[0]
+                ? await axios.get(card.species[0]).then(res => {
+                    card.species = res.data.name;
+                  })
+                : (card.species = "");
+            });
             ctx.commit("updateCards", res.data);
           });
       }

@@ -1,7 +1,8 @@
 <template>
   <div id="app" @scroll="onScroll">
     <Header />
-    <div class="container">
+    <Preloader v-if="isPreloader" />
+    <div v-else>
       <List />
     </div>
     <Footer />
@@ -12,25 +13,33 @@
 import List from "./components/List";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import { mapGetters } from "vuex";
+import Preloader from "./components/Preloader";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "App",
   components: {
     Header,
     List,
-    Footer
+    Footer,
+    Preloader
   },
   data() {
     return {
       checkFirst: true
     };
   },
-  computed: mapGetters(["getCards"]),
+  computed: {
+    ...mapGetters(["getCards"]),
+    isPreloader: function() {
+      return this.getCards.length ? false : true;
+    }
+  },
   mounted() {
-    this.$store.dispatch("fetchCards");
+    setTimeout(() => this.fetchCards(), 2000);
   },
   methods: {
+    ...mapActions(["fetchCards"]),
     onScroll: function(event) {
       const endList = event.target.lastElementChild.getBoundingClientRect().top;
       if (
@@ -38,7 +47,7 @@ export default {
           window.pageYOffset + document.documentElement.clientHeight &&
         this.checkFirst
       ) {
-        this.$store.dispatch("fetchCards");
+        this.fetchCards();
         this.checkFirst = false;
       }
     }
@@ -58,8 +67,5 @@ export default {
   background-color: #333333;
   overflow-y: scroll;
   color: white;
-}
-.container {
-  padding: 0 112px;
 }
 </style>

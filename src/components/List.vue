@@ -1,15 +1,19 @@
 <template>
   <div class="list">
     <div class="list__item" v-for="card in getCards" :key="card.name">
-      <div class="list__item__info">{{ card.name }}</div>
+      <Card :card="card" />
     </div>
   </div>
 </template>
 
 <script>
+import Card from "./Card";
 import { mapGetters } from "vuex";
 
 export default {
+  components: {
+    Card
+  },
   computed: mapGetters(["getCards"])
 };
 </script>
@@ -18,21 +22,22 @@ export default {
 .list {
   display: flex;
   flex-flow: row wrap;
-  margin-bottom: 160px;
+  margin-bottom: 128px;
   &__item {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: calc(50% - 16px);
+    width: calc(50% - 128px);
     height: 320px;
     background-color: #1a1a1a;
     border-radius: 8px;
     margin-bottom: 32px;
+    margin-right: 112px;
+    box-shadow: 0 14px 28px rgba(255, 255, 255, 0.15),
+      0 10px 10px rgba(255, 255, 255, 0.25);
     &:nth-child(odd) {
       margin-right: 32px;
-    }
-    &:nth-last-child(-n + 2) {
-      margin-bottom: 0;
+      margin-left: 112px;
     }
   }
 }
