@@ -1,6 +1,11 @@
 <template>
   <div class="list">
-    <div class="list__item" v-for="card in getCards" :key="card.name">
+    <div
+      class="list__item"
+      v-for="card in getCards"
+      :key="card.name"
+      @click="popupClick(card)"
+    >
       <Card :card="card" />
     </div>
   </div>
@@ -14,7 +19,17 @@ export default {
   components: {
     Card
   },
-  computed: mapGetters(["getCards"])
+  data: () => {
+    return {
+      showPopup: false
+    };
+  },
+  computed: mapGetters(["getCards"]),
+  methods: {
+    popupClick(card) {
+      this.$emit("popupClick", card);
+    }
+  }
 };
 </script>
 
@@ -33,12 +48,19 @@ export default {
     border-radius: 8px;
     margin-bottom: 32px;
     margin-right: 112px;
-    box-shadow: 0 14px 28px rgba(255, 255, 255, 0.15),
-      0 10px 10px rgba(255, 255, 255, 0.25);
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.15), 0 10px 10px rgba(0, 0, 0, 0.25);
+    cursor: pointer;
     &:nth-child(odd) {
       margin-right: 32px;
       margin-left: 112px;
     }
+    &:active {
+      box-shadow: 0 14px 28px rgba(96, 151, 168, 0.15),
+        0 10px 10px rgba(96, 151, 168, 0.25);
+    }
+  }
+  &__blur {
+    filter: blur(5px);
   }
 }
 </style>

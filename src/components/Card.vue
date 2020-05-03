@@ -1,10 +1,10 @@
 <template>
   <div class="card-info">
-    <div class="card-info__avatar" v-bind:style="{ backgroundColor: getColor }">
+    <div class="avatar" :style="{ backgroundColor: getColor }">
       {{ card.name.substr(0, 1) }}
     </div>
     <p class="card-info__name">{{ card.name }}</p>
-    <p class="card-info__species">{{ card.species }}</p>
+    <p class="card-info__species">{{ card.speciesRes }}</p>
   </div>
 </template>
 
@@ -39,15 +39,15 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  &__avatar {
-    margin: 0 auto;
-    width: 80px;
-    height: 80px;
-    font-weight: 500;
-    font-size: 48px;
-    line-height: 80px;
-    border-radius: 50%;
-    color: white;
-  }
+}
+.avatar {
+  margin: 0 auto;
+  width: 80px;
+  height: 80px;
+  font-weight: 500;
+  font-size: 48px;
+  line-height: 80px;
+  border-radius: 50%;
+  color: white;
 }
 </style>

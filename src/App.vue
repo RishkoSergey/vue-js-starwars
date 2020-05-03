@@ -1,11 +1,15 @@
 <template>
   <div id="app" @scroll="onScroll">
-    <Header />
-    <Preloader v-if="isPreloader" />
-    <div v-else>
-      <List />
+    <div :class="{ blur: showPopup }">
+      <Header />
+      <Preloader v-if="isPreloader" />
+      <div v-else>
+        <Search />
+        <List @popupClick="popupClick($event)" />
+      </div>
+      <Footer />
     </div>
-    <Footer />
+    <Popup :data="popupData" v-if="showPopup" @close="showPopup = false" />
   </div>
 </template>
 
@@ -14,6 +18,8 @@ import List from "./components/List";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Preloader from "./components/Preloader";
+import Popup from "./components/Popup";
+import Search from "./components/Search";
 import { mapGetters, mapActions } from "vuex";
 
 export default {
@@ -22,11 +28,15 @@ export default {
     Header,
     List,
     Footer,
-    Preloader
+    Preloader,
+    Popup,
+    Search
   },
   data() {
     return {
-      checkFirst: true
+      checkFirst: true,
+      showPopup: false,
+      popupData: {}
     };
   },
   computed: {
@@ -36,20 +46,21 @@ export default {
     }
   },
   mounted() {
-    setTimeout(() => this.fetchCards(), 2000);
+    setTimeout(() => this.fetchCards(), 1500);
   },
   methods: {
-    ...mapActions(["fetchCards"]),
+    ...mapActions(["fetchCards", "updateCards"]),
     onScroll: function(event) {
-      const endList = event.target.lastElementChild.getBoundingClientRect().top;
-      if (
-        window.pageYOffset + endList <
-          window.pageYOffset + document.documentElement.clientHeight &&
-        this.checkFirst
-      ) {
-        this.fetchCards();
+      const endList = event.target.firstElementChild.lastElementChild.getBoundingClientRect()
+        .top;
+      if (endList < document.documentElement.clientHeight && this.checkFirst) {
+        this.updateCards();
         this.checkFirst = false;
       }
+    },
+    popupClick: function(event) {
+      this.popupData = event;
+      this.showPopup = true;
     }
   },
   watch: {
@@ -67,5 +78,8 @@ export default {
   background-color: #333333;
   overflow-y: scroll;
   color: white;
+}
+.blur {
+  filter: blur(7px);
 }
 </style>
