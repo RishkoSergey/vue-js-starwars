@@ -1,45 +1,49 @@
 <template>
   <div class="popup">
-    <Preloader v-if="isPreloader" />
-    <div class="popup__container" v-else>
-      <div class="popup__top-block">
-        <div class="avatar" :style="{ backgroundColor: getColor }">
-          {{ data.name.substr(0, 1) }}
+    <div class="popup__content">
+      <Preloader v-if="isPreloader" />
+      <div v-else class="popup__container">
+        <div class="popup__top-block">
+          <div class="avatar" :style="{ backgroundColor: getColor }">
+            {{ data.name.substr(0, 1) }}
+          </div>
+          <div class="popup__top-block__name">
+            {{ data.name }}
+          </div>
         </div>
-        <div class="popup__top-block__name">
-          {{ data.name }}
+        <div class="popup__bottom-block">
+          <PopupListItem
+            name="Birth year"
+            :res="getPopupInfo.birth_year"
+            :img="require('../assets/birth_year.png')"
+          />
+          <PopupListItem
+            name="Homeworld"
+            :res="getPopupInfo.homeworldRes"
+            :img="require('../assets/homeworld.png')"
+          />
+          <div>
+            <PopupListItem
+              name="Species"
+              :res="getPopupInfo.speciesRes"
+              :img="require('../assets/species.png')"
+            />
+            <PopupListItem
+              name="Gender"
+              :res="getPopupInfo.gender"
+              :img="require('../assets/gender.png')"
+            />
+          </div>
+          <PopupListItem
+            name="Films"
+            :res="getPopupInfo.filmsRes"
+            :img="require('../assets/films.png')"
+          />
         </div>
       </div>
-      <div class="popup__bottom-block">
-        <PopupListItem
-          name="Birth year"
-          :res="getPopupInfo.birth_year"
-          :img="require('../assets/birth_year.png')"
-        />
-        <PopupListItem
-          name="Species"
-          :res="getPopupInfo.species"
-          :img="require('../assets/species.png')"
-        />
-        <PopupListItem
-          name="Gender"
-          :res="getPopupInfo.gender"
-          :img="require('../assets/gender.png')"
-        />
-        <PopupListItem
-          name="Homeworld"
-          :res="getPopupInfo.homeworldRes"
-          :img="require('../assets/homeworld.png')"
-        />
-        <PopupListItem
-          name="Films"
-          :res="getPopupInfo.filmsRes"
-          :img="require('../assets/films.png')"
-        />
+      <div class="popup__close" @click="closePopup">
+        <img src="../assets/close.png" />
       </div>
-    </div>
-    <div class="popup__close" @click="closePopup">
-      <img src="../assets/close.png" />
     </div>
   </div>
 </template>
@@ -92,13 +96,21 @@ export default {
 
 <style lang="scss">
 .popup {
-  width: 800px;
-  position: absolute;
-  left: calc(50% - 400px);
-  top: calc(50% - 246px);
-  background-color: #1a1a1a;
-  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.15), 0 10px 10px rgba(0, 0, 0, 0.25);
-  border-radius: 8px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0px;
+  &__content {
+    position: relative;
+    background-color: #1a1a1a;
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.15), 0 10px 10px rgba(0, 0, 0, 0.25);
+    border-radius: 8px;
+    width: 800px;
+    max-width: 100%;
+  }
   .preloader {
     margin-top: 150px;
   }
@@ -116,15 +128,21 @@ export default {
       margin: 0;
       margin-right: 15px;
     }
+    &__name {
+      font-weight: bold;
+      font-size: 24px;
+      line-height: 28px;
+    }
   }
   &__bottom-block {
-    margin: 80px 0;
-    max-height: 130px;
+    margin-top: 70px;
+    margin-bottom: 76px;
     display: flex;
-    flex-flow: column wrap;
-    .popup-list-item {
-      &:nth-child(3) {
-        height: 80px;
+    flex-flow: row wrap;
+    & > div {
+      width: 45%;
+      &:nth-child(even) {
+        width: 55%;
       }
     }
   }
@@ -133,6 +151,41 @@ export default {
     right: 22px;
     top: 22px;
     cursor: pointer;
+  }
+  @media (max-width: 767px) {
+    &__content {
+      box-shadow: none;
+      border-radius: 8px;
+      width: 100%;
+      height: 100%;
+      overflow-y: scroll;
+    }
+    .preloader {
+      margin-top: 150px;
+    }
+    &__container {
+      padding: 0 24px;
+    }
+    &__top-block {
+      margin-top: 48px;
+      padding-bottom: 48px;
+      &__name {
+        font-size: 22px;
+        line-height: 26px;
+      }
+    }
+    &__bottom-block {
+      margin-top: 48px;
+      margin-bottom: 48px;
+      display: flex;
+      flex-flow: column nowrap;
+      & > div {
+        width: 100%;
+        &:nth-child(even) {
+          width: 100%;
+        }
+      }
+    }
   }
 }
 </style>

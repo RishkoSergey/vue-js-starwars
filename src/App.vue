@@ -73,6 +73,7 @@ export default {
 
 <style lang="scss">
 #app {
+  font-family: Roboto, sans-serif;
   width: 100%;
   height: 100vh;
   background-color: #333333;

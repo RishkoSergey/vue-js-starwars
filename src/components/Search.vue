@@ -1,6 +1,12 @@
 <template>
   <div class="search">
-    <input type="text" v-model="keywords" placeholder="Search.." />
+    <input
+      type="text"
+      v-model="keywords"
+      @keyup.enter="enterData"
+      placeholder="Search by name"
+    />
+    <img src="../assets/search.png" />
   </div>
 </template>
 
@@ -36,7 +42,10 @@ export default {
     ...mapActions(["search"]),
     fetchData: debounce(function() {
       this.search(this.keywords);
-    }, 200)
+    }, 200),
+    enterData: function() {
+      this.search(this.keywords);
+    }
   }
 };
 </script>
@@ -47,13 +56,31 @@ export default {
   background-color: #333333;
   display: flex;
   justify-content: center;
+  border-bottom: 1px solid #808080;
+  max-width: 90%;
+  margin: 0 320px;
   margin-bottom: 80px;
-}
-/* Style the search box inside the navigation bar */
-.search input[type="text"] {
-  padding: 6px;
-  border: none;
-  font-size: 17px;
-  width: 60%;
+  input {
+    background-color: transparent;
+    padding: 6px 0;
+    border: none;
+    outline: none;
+    font-size: 18px;
+    line-height: 21px;
+    font-weight: 500;
+    width: 100%;
+  }
+  img {
+    width: 23px;
+    height: 23px;
+  }
+  @media (max-width: 767px) {
+    margin: 0 24px;
+    margin-bottom: 45px;
+    img {
+      width: 18px;
+      height: 18px;
+    }
+  }
 }
 </style>

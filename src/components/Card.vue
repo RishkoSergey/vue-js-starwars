@@ -39,6 +39,21 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+  &__name {
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 21px;
+    margin-bottom: 10px;
+    &::after {
+      content: "";
+    }
+  }
+  &__species {
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 15px;
+    color: #808080;
+  }
 }
 .avatar {
   margin: 0 auto;
@@ -49,5 +64,6 @@ export default {
   line-height: 80px;
   border-radius: 50%;
   color: white;
+  margin-bottom: 10px;
 }
 </style>

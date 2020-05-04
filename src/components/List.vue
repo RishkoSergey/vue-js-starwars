@@ -1,7 +1,7 @@
 <template>
   <div class="list">
     <div
-      class="list__item"
+      class="list__item slideUp"
       v-for="card in getCards"
       :key="card.name"
       @click="popupClick(card)"
@@ -54,13 +54,47 @@ export default {
       margin-right: 32px;
       margin-left: 112px;
     }
+    &:hover,
     &:active {
       box-shadow: 0 14px 28px rgba(96, 151, 168, 0.15),
         0 10px 10px rgba(96, 151, 168, 0.25);
+      transition: bottom 0.5s linear 0.2s;
     }
   }
   &__blur {
     filter: blur(5px);
+  }
+
+  @media (max-width: 767px) {
+    margin-bottom: 96px;
+    &__item {
+      width: calc(100% - 48px);
+      height: 200px;
+      background-color: #1a1a1a;
+      border-radius: 8px;
+      margin: 0 24px 24px 24px;
+      &:nth-child(odd) {
+        margin-left: 24px;
+      }
+    }
+  }
+}
+.slideUp {
+  animation-name: slideUp;
+
+  animation-duration: 2s;
+
+  animation-timing-function: ease;
+
+  visibility: visible !important;
+}
+
+@keyframes slideUp {
+  0% {
+    transform: translateY(100%);
+  }
+  100% {
+    transform: translateY(0%);
   }
 }
 </style>
